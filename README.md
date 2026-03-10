@@ -208,33 +208,25 @@ You should see the **DevOps Team Webpage** displaying team member cards.
 
 ### Terraform Infrastructure Creation
 
-```
-[Add screenshot of terraform apply output here]
-```
+![Terraform Output](screenshots/terraform.png)
 
 ---
 
 ### Ansible Configuration Automation
 
-```
-[Add screenshot of ansible-playbook execution here]
-```
+![Ansible Playbook](screenshots/ansible.png)
 
 ---
 
 ### Docker Container Running on EC2
 
-```
-[Add screenshot of docker ps output here]
-```
+![Docker Container](screenshots/docker.png)
 
 ---
 
 ### Deployed Web Application
 
-```
-[Add screenshot of application opened in browser here]
-```
+![Application Screenshot](screenshots/app.png)
 
 ---
 
