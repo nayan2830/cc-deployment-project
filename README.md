@@ -2,7 +2,9 @@
 
 **Terraform • Ansible • Docker • AWS EC2**
 
-## 📌 Project Overview
+---
+
+# 📌 Project Overview
 
 This project demonstrates a complete DevOps workflow for deploying a **Node.js web application on AWS infrastructure** using modern DevOps tools.
 
@@ -12,38 +14,67 @@ This project showcases **Infrastructure as Code (IaC)**, **automation**, and **c
 
 ---
 
+# 🌐 Live Deployment
+
+The application is successfully deployed on an **AWS EC2 instance** and can be accessed at:
+
+```
+http://13.127.29.114
+```
+
+The Node.js application runs inside a **Docker container** on an EC2 server provisioned using **Terraform** and configured using **Ansible**.
+
+---
+
 # 🧰 Technologies Used
 
-| Tool             | Purpose                                      |
-| ---------------- | -------------------------------------------- |
-| **AWS EC2**      | Cloud infrastructure to host the application |
-| **Terraform**    | Infrastructure provisioning (IaC)            |
-| **Ansible**      | Server configuration automation              |
-| **Docker**       | Application containerization                 |
-| **Node.js**      | Web application runtime                      |
-| **Git & GitHub** | Version control and project hosting          |
-| **WSL (Ubuntu)** | Local development environment                |
+| Tool | Purpose |
+|-----|--------|
+| **AWS EC2** | Cloud infrastructure to host the application |
+| **Terraform** | Infrastructure provisioning (IaC) |
+| **Ansible** | Server configuration automation |
+| **Docker** | Application containerization |
+| **Node.js** | Web application runtime |
+| **Git & GitHub** | Version control and project hosting |
+| **WSL (Ubuntu)** | Local development environment |
+
+---
+
+# 📋 Prerequisites
+
+Make sure the following tools are installed on your system before running this project:
+
+- Terraform
+- Ansible
+- Docker
+- AWS CLI configured with credentials
+- Git
+- WSL / Linux environment
 
 ---
 
 # 🏗 Project Architecture
 
 ```
-Local Machine (WSL)
-        │
-        │ Terraform
-        ▼
-AWS Infrastructure (EC2 + Security Group)
-        │
-        │ Ansible
-        ▼
+Developer Machine (WSL / Linux)
+            │
+            │ Terraform
+            ▼
+AWS Infrastructure
+(EC2 Instance + Security Group)
+            │
+            │ Ansible
+            ▼
 Docker Installed on EC2
-        │
-        ▼
+            │
+            ▼
 Docker Container
-        │
-        ▼
+            │
+            ▼
 Node.js Web Application
+            │
+            ▼
+User Browser (Public IP)
 ```
 
 ---
@@ -51,7 +82,7 @@ Node.js Web Application
 # 📂 Project Structure
 
 ```
-cc-project
+cc-deployment-project
 │
 ├── terraform
 │   └── main.tf
@@ -64,6 +95,8 @@ cc-project
 │   ├── server.js
 │   ├── package.json
 │   └── Dockerfile
+│
+├── screenshots
 │
 ├── .gitignore
 └── README.md
@@ -104,9 +137,9 @@ terraform apply
 
 Terraform will create:
 
-* AWS EC2 Instance
-* Security Group
-* Networking rules
+- AWS EC2 Instance
+- Security Group
+- Networking rules
 
 ---
 
@@ -126,8 +159,8 @@ ansible-playbook -i inventory playbook.yml
 
 This installs:
 
-* Docker
-* Required system packages
+- Docker
+- Required system packages
 
 ---
 
@@ -148,7 +181,13 @@ docker build -t node-app .
 Run container:
 
 ```bash
-docker run -d -p 3000:3000 node-app
+docker run -d -p 80:3000 node-app
+```
+
+This maps:
+
+```
+EC2 Port 80 → Node.js Application Port 3000
 ```
 
 ---
@@ -158,29 +197,63 @@ docker run -d -p 3000:3000 node-app
 Open your browser and visit:
 
 ```
-http://<EC2_PUBLIC_IP>:3000
+http://13.127.29.114
 ```
 
 You should see the **DevOps Team Webpage** displaying team member cards.
 
 ---
 
+# 📸 Project Screenshots
+
+### Terraform Infrastructure Creation
+
+```
+[Add screenshot of terraform apply output here]
+```
+
+---
+
+### Ansible Configuration Automation
+
+```
+[Add screenshot of ansible-playbook execution here]
+```
+
+---
+
+### Docker Container Running on EC2
+
+```
+[Add screenshot of docker ps output here]
+```
+
+---
+
+### Deployed Web Application
+
+```
+[Add screenshot of application opened in browser here]
+```
+
+---
+
 # 👨‍💻 Team Members
 
-* **Nayan Kesare**
-* **Sifan Shamlewale**
-* **Omkar Magar**
-* **Rushikesh Pawar**
+- **Nayan Kesare**
+- **Sifan Shamlewale**
+- **Omkar Magar**
+- **Rushikesh Pawar**
 
 ---
 
 # 📊 DevOps Workflow Implemented
 
-✔ Infrastructure Provisioning with **Terraform**
-✔ Infrastructure as Code (**IaC**)
-✔ Automated configuration using **Ansible**
-✔ Application containerization with **Docker**
-✔ Cloud deployment on **AWS EC2**
+✔ Infrastructure Provisioning using **Terraform**  
+✔ Infrastructure as Code (**IaC**)  
+✔ Server Configuration using **Ansible**  
+✔ Application Containerization using **Docker**  
+✔ Cloud Deployment on **AWS EC2**
 
 ---
 
@@ -188,14 +261,14 @@ You should see the **DevOps Team Webpage** displaying team member cards.
 
 Through this project we learned:
 
-* Infrastructure automation using Terraform
-* Configuration management with Ansible
-* Containerization using Docker
-* Cloud deployment on AWS
-* Building a complete DevOps deployment pipeline
+- Infrastructure automation using Terraform
+- Configuration management with Ansible
+- Containerization using Docker
+- Cloud deployment on AWS
+- Building a complete DevOps deployment pipeline
 
 ---
 
 # 📜 License
 
-This project was developed for academic and learning purposes.
+This project was developed for **academic and learning purposes**.
