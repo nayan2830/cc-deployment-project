@@ -1,4 +1,4 @@
-# 🚀 DevOps CC Deployment Project
+# 🚀 CC Deployment Project
 
 **Terraform • Ansible • Docker • AWS EC2**
 
