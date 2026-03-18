@@ -6,74 +6,76 @@
 
 # 📌 Project Overview
 
-This project demonstrates a complete DevOps workflow for deploying a **Node.js web application on AWS infrastructure** using modern DevOps tools.
+This project demonstrates a complete **DevOps automated deployment pipeline** for deploying a **Node.js web application on AWS infrastructure**.
 
-The infrastructure is provisioned using **Terraform**, server configuration is automated using **Ansible**, and the application is **containerized with Docker** before being deployed on an **AWS EC2 instance**.
+The system uses:
 
-This project showcases **Infrastructure as Code (IaC)**, **automation**, and **containerization** as part of a cloud deployment pipeline.
+* **Terraform** for Infrastructure as Code (IaC)
+* **Ansible** for configuration management and automation
+* **Docker** for application containerization
+* **AWS EC2** for cloud hosting
+
+The entire deployment is automated and can be executed using just **two commands**.
 
 ---
 
 # 🌐 Live Deployment
 
-The application is successfully deployed on an **AWS EC2 instance** and can be accessed at:
+The application is deployed on an AWS EC2 instance:
 
 ```
-http://13.127.29.114
+http://<EC2_PUBLIC_IP>
 ```
 
-The Node.js application runs inside a **Docker container** on an EC2 server provisioned using **Terraform** and configured using **Ansible**.
+Example:
+
+```
+http://35.154.188.211
+```
 
 ---
 
 # 🧰 Technologies Used
 
-| Tool | Purpose |
-|-----|--------|
-| **AWS EC2** | Cloud infrastructure to host the application |
-| **Terraform** | Infrastructure provisioning (IaC) |
-| **Ansible** | Server configuration automation |
-| **Docker** | Application containerization |
-| **Node.js** | Web application runtime |
-| **Git & GitHub** | Version control and project hosting |
-| **WSL (Ubuntu)** | Local development environment |
-
----
-
-# 📋 Prerequisites
-
-Make sure the following tools are installed on your system before running this project:
-
-- Terraform
-- Ansible
-- Docker
-- AWS CLI configured with credentials
-- Git
-- WSL / Linux environment
+| Tool             | Purpose                           |
+| ---------------- | --------------------------------- |
+| **AWS EC2**      | Cloud infrastructure              |
+| **Terraform**    | Infrastructure provisioning (IaC) |
+| **Ansible**      | Server automation                 |
+| **Docker**       | Application containerization      |
+| **Node.js**      | Backend runtime                   |
+| **Git & GitHub** | Version control                   |
+| **WSL (Ubuntu)** | Development environment           |
 
 ---
 
 # 🏗 Project Architecture
 
 ```
-Developer Machine (WSL / Linux)
-            │
-            │ Terraform
-            ▼
-AWS Infrastructure
-(EC2 Instance + Security Group)
-            │
-            │ Ansible
-            ▼
+Developer (WSL)
+        │
+        ▼
+Terraform (IaC)
+        │
+        ▼
+AWS EC2 + Security Group
+        │
+        ▼
+Terraform generates Ansible inventory
+        │
+        ▼
+Ansible Automation
+        │
+        ▼
 Docker Installed on EC2
-            │
-            ▼
+        │
+        ▼
 Docker Container
-            │
-            ▼
-Node.js Web Application
-            │
-            ▼
+        │
+        ▼
+Node.js Application
+        │
+        ▼
 User Browser (Public IP)
 ```
 
@@ -88,7 +90,7 @@ cc-deployment-project
 │   └── main.tf
 │
 ├── ansible
-│   ├── inventory
+│   ├── inventory   (auto-generated)
 │   └── playbook.yml
 │
 ├── node-app
@@ -97,110 +99,119 @@ cc-deployment-project
 │   └── Dockerfile
 │
 ├── screenshots
-│
-├── .gitignore
 └── README.md
 ```
 
 ---
 
-# ⚙️ Setup Instructions
+# ⚙️ Prerequisites
 
-## 1️⃣ Clone the Repository
+Ensure the following are installed:
 
-```bash
-git clone https://github.com/nayan2830/cc-deployment-project.git
-cd cc-deployment-project
-```
+* Terraform
+* Ansible
+* Docker
+* AWS CLI (configured)
+* Git
+* WSL / Linux
 
 ---
 
-# 🌍 Step 1 — Provision Infrastructure using Terraform
+# 🚀 Deployment Steps (Fully Automated)
 
-Navigate to Terraform folder:
+## Step 1 — Provision Infrastructure
 
 ```bash
 cd terraform
-```
-
-Initialize Terraform:
-
-```bash
 terraform init
-```
-
-Apply configuration:
-
-```bash
 terraform apply
 ```
 
-Terraform will create:
+This will:
 
-- AWS EC2 Instance
-- Security Group
-- Networking rules
+* Create EC2 instance
+* Create security group (ports 22 & 80)
+* Output public IP
+* Automatically generate Ansible inventory
 
 ---
 
-# ⚙️ Step 2 — Configure Server using Ansible
-
-Navigate to Ansible folder:
+## Step 2 — Configure Server & Deploy App
 
 ```bash
 cd ../ansible
-```
-
-Run playbook:
-
-```bash
 ansible-playbook -i inventory playbook.yml
 ```
 
-This installs:
+This will:
 
-- Docker
-- Required system packages
+* Install Docker
+* Start Docker service
+* Copy Node.js application to EC2
+* Build Docker image
+* Run container
 
 ---
 
-# 🐳 Step 3 — Dockerize the Application
+# 🌐 Access the Application
 
-Navigate to Node application:
-
-```bash
-cd ../node-app
-```
-
-Build Docker image:
-
-```bash
-docker build -t node-app .
-```
-
-Run container:
-
-```bash
-docker run -d -p 80:3000 node-app
-```
-
-This maps:
+Open in browser:
 
 ```
-EC2 Port 80 → Node.js Application Port 3000
+http://<EC2_PUBLIC_IP>
 ```
 
 ---
 
-# 🌐 Step 4 — Access the Application
+# 🐳 Docker Details
 
-Open your browser and visit:
+The application runs inside a Docker container.
+
+Port mapping:
 
 ```
-http://13.127.29.114
+EC2 Port 80 → Container Port 3000
 ```
 
-You should see the **DevOps Team Webpage** displaying team member cards.
+---
+
+# 🔄 DevOps Workflow
+
+```
+Terraform (IaC)
+      │
+      ▼
+AWS Infrastructure
+      │
+      ▼
+Ansible Automation
+      │
+      ▼
+Docker Build & Run
+      │
+      ▼
+Node.js Application
+```
+
+---
+
+# 📊 Before vs After Automation
+
+### ❌ Before Automation
+
+* Manual inventory update
+* Manual SSH into EC2
+* Manual Docker commands
+* 8–10 steps
+
+### ✅ After Automation
+
+```bash
+terraform apply
+ansible-playbook -i inventory playbook.yml
+```
+
+Only **2 commands required**
 
 ---
 
@@ -208,59 +219,55 @@ You should see the **DevOps Team Webpage** displaying team member cards.
 
 ### Terraform Infrastructure Creation
 
-![Terraform Output](screenshots/terraform.png)
+![Terraform](screenshots/terraform.png)
 
 ---
 
-### Ansible Configuration Automation
+### Ansible Configuration
 
-![Ansible Playbook](screenshots/ansible.png)
-
----
-
-### Docker Container Running on EC2
-
-![Docker Container](screenshots/docker.png)
+![Ansible](screenshots/ansible.png)
 
 ---
 
-### Deployed Web Application
+### Docker Container Running
 
-![Application Screenshot](screenshots/app.png)
+![Docker](screenshots/docker.png)
+
+---
+
+### Deployed Application
+
+![App](screenshots/app.png)
 
 ---
 
 # 👨‍💻 Team Members
 
-- **Nayan Kesare**
-- **Sifan Shamlewale**
-- **Omkar Magar**
-- **Rushikesh Pawar**
-
----
-
-# 📊 DevOps Workflow Implemented
-
-✔ Infrastructure Provisioning using **Terraform**  
-✔ Infrastructure as Code (**IaC**)  
-✔ Server Configuration using **Ansible**  
-✔ Application Containerization using **Docker**  
-✔ Cloud Deployment on **AWS EC2**
+* Nayan Kesare
+* Sifan Shamlewale
+* Omkar Magar
+* Rushikesh Pawar
 
 ---
 
 # 🎯 Learning Outcomes
 
-Through this project we learned:
-
-- Infrastructure automation using Terraform
-- Configuration management with Ansible
-- Containerization using Docker
-- Cloud deployment on AWS
-- Building a complete DevOps deployment pipeline
+* Infrastructure provisioning using Terraform
+* Infrastructure as Code (IaC)
+* Configuration management using Ansible
+* Containerization using Docker
+* Cloud deployment on AWS
+* Automation of DevOps pipeline
 
 ---
 
-# 📜 License
+# 📜 Conclusion
 
-This project was developed for **academic and learning purposes**.
+This project demonstrates how DevOps tools can be integrated to automate application deployment on cloud infrastructure. By combining Terraform, Ansible, and Docker, the deployment process becomes faster, consistent, and scalable.
+
+---
+
+# 📄 License
+
+This project is developed for academic and learning purposes.
+
