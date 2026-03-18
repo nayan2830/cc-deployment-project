@@ -13,9 +13,9 @@ resource "aws_security_group" "node_sg" {
   }
 
   ingress {
-    from_port = 3000
-    to_port = 3000
-    protocol = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -40,6 +40,18 @@ resource "aws_instance" "node_server" {
   }
 }
 
+output "instance_id" {
+ value = aws_instance.node_server.id
+}
 output "public_ip" {
   value = aws_instance.node_server.public_ip
+}
+
+resource "local_file" "ansible_inventory" {
+  content = <<EOT
+[node]
+${aws_instance.node_server.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=../terraform/mykey.pem
+EOT
+
+  filename = "../ansible/inventory"
 }

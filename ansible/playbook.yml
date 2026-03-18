@@ -16,3 +16,15 @@
     service:
       name: docker
       state: started
+
+  - name: Copy node-app folder to EC2
+    copy:
+      src: ../node-app/
+      dest: /home/ubuntu/node-app/
+
+  - name: Build Docker image
+    command: docker build -t node-app /home/ubuntu/node-app
+
+  - name: Run Docker container
+    command: docker run -d -p 80:3000 node-app
+    ignore_errors: yes
