@@ -1,127 +1,120 @@
-# 🚀 CC Deployment Project
+# 🚀 Cloud Computing Deployment Project
 
-**Terraform • Ansible • Docker • AWS EC2**
+### Terraform • Ansible • Docker • AWS EC2
 
 ---
 
 # 📌 Project Overview
 
-This project demonstrates a complete **DevOps automated deployment pipeline** for deploying a **Node.js web application on AWS infrastructure**.
+This project demonstrates a complete **DevOps automated deployment pipeline** for deploying a **Node.js web application on AWS cloud infrastructure**.
 
-The system uses:
-
-* **Terraform** for Infrastructure as Code (IaC)
-* **Ansible** for configuration management and automation
-* **Docker** for application containerization
-* **AWS EC2** for cloud hosting
-
-The entire deployment is automated and can be executed using just **two commands**.
+The deployment is fully automated using modern DevOps tools and follows the **Build Once, Deploy Anywhere** principle.
 
 ---
 
-# 🌐 Live Deployment
+# 🧠 Key Features
 
-The application is deployed on an AWS EC2 instance:
-
-```
-http://<EC2_PUBLIC_IP>
-```
-
-Example:
-
-```
-http://35.154.188.211
-```
+* Infrastructure provisioning using **Terraform (IaC)**
+* Automated configuration using **Ansible**
+* Application containerization using **Docker**
+* Cloud deployment on **AWS EC2**
+* Uses **Docker Hub** for image storage and reuse
+* Fully automated pipeline with minimal manual steps
 
 ---
 
-# 🧰 Technologies Used
+# 🏗 Architecture
 
-| Tool             | Purpose                           |
-| ---------------- | --------------------------------- |
-| **AWS EC2**      | Cloud infrastructure              |
-| **Terraform**    | Infrastructure provisioning (IaC) |
-| **Ansible**      | Server automation                 |
-| **Docker**       | Application containerization      |
-| **Node.js**      | Backend runtime                   |
-| **Git & GitHub** | Version control                   |
-| **WSL (Ubuntu)** | Development environment           |
-
----
-
-# 🏗 Project Architecture
-
-```
-Developer (WSL)
-        │
-        ▼
+```id="rqgkzx"
+Local Machine
+     │
+     ├── Docker Build
+     ├── Docker Push (Docker Hub)
+     │
+     ▼
+Docker Hub (Image Registry)
+     │
+     ▼
 Terraform (IaC)
-        │
-        ▼
+     │
+     ▼
 AWS EC2 + Security Group
-        │
-        ▼
-Terraform generates Ansible inventory
-        │
-        ▼
+     │
+     ▼
 Ansible Automation
-        │
-        ▼
-Docker Installed on EC2
-        │
-        ▼
-Docker Container
-        │
-        ▼
+     │
+     ├── Install Docker
+     ├── Pull Image
+     ├── Run Container
+     │
+     ▼
 Node.js Application
-        │
-        ▼
-User Browser (Public IP)
+     │
+     ▼
+User Browser 🌐
 ```
 
 ---
 
 # 📂 Project Structure
 
-```
-cc-deployment-project
+```id="vmvshv"
+cc-project/
 │
-├── terraform
+├── README.md
+├── .gitignore
+│
+├── terraform/
 │   └── main.tf
 │
-├── ansible
-│   ├── inventory   (auto-generated)
-│   └── playbook.yml
+├── ansible/
+│   ├── playbook.yml
+│   └── inventory (auto-generated)
 │
-├── node-app
-│   ├── server.js
+├── node-app/
+│   ├── Dockerfile
 │   ├── package.json
-│   └── Dockerfile
+│   ├── package-lock.json
+│   └── server.js
 │
-├── screenshots
-└── README.md
+├── screenshots/
+│   ├── terraform.png
+│   ├── ansible.png
+│   ├── docker.png
+│   └── app.png
 ```
 
 ---
 
 # ⚙️ Prerequisites
 
-Ensure the following are installed:
+Ensure the following tools are installed:
 
 * Terraform
 * Ansible
 * Docker
 * AWS CLI (configured)
 * Git
-* WSL / Linux
+* Linux / WSL environment
 
 ---
 
-# 🚀 Deployment Steps (Fully Automated)
+# 🚀 Deployment Steps
 
-## Step 1 — Provision Infrastructure
+## Step 1 — Build & Push Docker Image
 
-```bash
+```bash id="gk8yla"
+cd node-app
+docker build -t <dockerhub-username>/node-app:latest .
+docker login
+docker push <dockerhub-username>/node-app:latest
+```
+
+---
+
+## Step 2 — Provision Infrastructure using Terraform
+
+```bash id="8sr1g7"
 cd terraform
 terraform init
 terraform apply
@@ -130,26 +123,23 @@ terraform apply
 This will:
 
 * Create EC2 instance
-* Create security group (ports 22 & 80)
-* Output public IP
-* Automatically generate Ansible inventory
+* Configure security group (ports 22 & 80)
+* Generate Ansible inventory file
 
 ---
 
-## Step 2 — Configure Server & Deploy App
+## Step 3 — Configure & Deploy using Ansible
 
-```bash
+```bash id="mk9jql"
 cd ../ansible
 ansible-playbook -i inventory playbook.yml
 ```
 
 This will:
 
-* Install Docker
-* Start Docker service
-* Copy Node.js application to EC2
-* Build Docker image
-* Run container
+* Install Docker on EC2
+* Pull Docker image from Docker Hub
+* Run container on port 80
 
 ---
 
@@ -157,7 +147,7 @@ This will:
 
 Open in browser:
 
-```
+```id="e6w32v"
 http://<EC2_PUBLIC_IP>
 ```
 
@@ -165,11 +155,11 @@ http://<EC2_PUBLIC_IP>
 
 # 🐳 Docker Details
 
-The application runs inside a Docker container.
+* Image stored on Docker Hub
+* Pulled during deployment
+* Port mapping:
 
-Port mapping:
-
-```
+```id="rxvfev"
 EC2 Port 80 → Container Port 3000
 ```
 
@@ -177,65 +167,27 @@ EC2 Port 80 → Container Port 3000
 
 # 🔄 DevOps Workflow
 
-```
-Terraform (IaC)
-      │
-      ▼
-AWS Infrastructure
-      │
-      ▼
-Ansible Automation
-      │
-      ▼
-Docker Build & Run
-      │
-      ▼
-Node.js Application
+```id="us0xs2"
+Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 ```
 
 ---
 
-# 📊 Before vs After Automation
+# 📸 Screenshots
 
-### ❌ Before Automation
-
-* Manual inventory update
-* Manual SSH into EC2
-* Manual Docker commands
-* 8–10 steps
-
-### ✅ After Automation
-
-```bash
-terraform apply
-ansible-playbook -i inventory playbook.yml
-```
-
-Only **2 commands required**
-
----
-
-# 📸 Project Screenshots
-
-### Terraform Infrastructure Creation
+### Terraform Provisioning
 
 ![Terraform](screenshots/terraform.png)
 
----
-
-### Ansible Configuration
+### Ansible Automation
 
 ![Ansible](screenshots/ansible.png)
 
----
-
-### Docker Container Running
+### Docker Container
 
 ![Docker](screenshots/docker.png)
 
----
-
-### Deployed Application
+### Application Output
 
 ![App](screenshots/app.png)
 
@@ -252,22 +204,20 @@ Only **2 commands required**
 
 # 🎯 Learning Outcomes
 
-* Infrastructure provisioning using Terraform
-* Infrastructure as Code (IaC)
+* Infrastructure as Code (IaC) using Terraform
 * Configuration management using Ansible
 * Containerization using Docker
 * Cloud deployment on AWS
-* Automation of DevOps pipeline
+* DevOps automation practices
 
 ---
 
 # 📜 Conclusion
 
-This project demonstrates how DevOps tools can be integrated to automate application deployment on cloud infrastructure. By combining Terraform, Ansible, and Docker, the deployment process becomes faster, consistent, and scalable.
+This project demonstrates how modern DevOps tools can be integrated to automate application deployment efficiently. The use of Docker Hub ensures scalability, consistency, and faster deployment across environments.
 
 ---
 
 # 📄 License
 
 This project is developed for academic and learning purposes.
-
