@@ -180,8 +180,6 @@ Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 
 ![Terraform](screenshots/terraform1.png)
 
-<br>
-
 ![Terraform](screenshots/terraform2.png)
 
 ---
@@ -206,7 +204,7 @@ Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 
 ![Docker](screenshots/docker3.png)
 
-#### 4. Checking Docker
+#### 4. Checking Docker Image and Container on EC2 Instance
 
 ![Docker](screenshots/docker4.png)
 
