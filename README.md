@@ -10,8 +10,6 @@ This project demonstrates a complete **DevOps automated deployment pipeline** fo
 
 The deployment is fully automated using modern DevOps tools and follows the **Build Once, Deploy Anywhere** principle.
 
-This project follows a real-world DevOps pipeline separating build and deployment stages using Docker Hub as a registry.
-
 ---
 
 # 🧠 Key Features
@@ -67,10 +65,7 @@ cc-project/
 ├── .gitignore
 │
 ├── terraform/
-│   ├── main.tf
-│   ├── mykey.pem
-│   ├── terraform.tfstate
-│   └── terraform.tfstate.backup
+│   └── main.tf
 │
 ├── ansible/
 │   └── playbook.yml
@@ -87,6 +82,8 @@ cc-project/
 │   ├── docker.png
 │   └── app.png
 ```
+
+> ⚠️ Note: Sensitive files like `.pem` keys and `.tfstate` are ignored using `.gitignore`.
 
 ---
 
@@ -182,18 +179,38 @@ Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 ### Terraform Provisioning
 
 ![Terraform](screenshots/terraform1.png)
+
+<br>
+
 ![Terraform](screenshots/terraform2.png)
+
+---
 
 ### Ansible Automation
 
 ![Ansible](screenshots/ansible.png)
 
+---
+
 ### Docker Container
 
+#### 1. Docker Build
+
 ![Docker](screenshots/docker1.png)
+
+#### 2. Docker Login
+
 ![Docker](screenshots/docker2.png)
+
+#### 3. Docker Push
+
 ![Docker](screenshots/docker3.png)
+
+#### 4. Checking Docker
+
 ![Docker](screenshots/docker4.png)
+
+---
 
 ### Application Output
 
