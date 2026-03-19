@@ -10,6 +10,8 @@ This project demonstrates a complete **DevOps automated deployment pipeline** fo
 
 The deployment is fully automated using modern DevOps tools and follows the **Build Once, Deploy Anywhere** principle.
 
+This project follows a real-world DevOps pipeline separating build and deployment stages using Docker Hub as a registry.
+
 ---
 
 # 🧠 Key Features
@@ -19,13 +21,13 @@ The deployment is fully automated using modern DevOps tools and follows the **Bu
 * Application containerization using **Docker**
 * Cloud deployment on **AWS EC2**
 * Uses **Docker Hub** for image storage and reuse
-* Fully automated pipeline with minimal manual steps
+* Fully automated deployment workflow
 
 ---
 
 # 🏗 Architecture
 
-```id="rqgkzx"
+```
 Local Machine
      │
      ├── Docker Build
@@ -58,18 +60,20 @@ User Browser 🌐
 
 # 📂 Project Structure
 
-```id="vmvshv"
+```
 cc-project/
 │
 ├── README.md
 ├── .gitignore
 │
 ├── terraform/
-│   └── main.tf
+│   ├── main.tf
+│   ├── mykey.pem
+│   ├── terraform.tfstate
+│   └── terraform.tfstate.backup
 │
 ├── ansible/
-│   ├── playbook.yml
-│   └── inventory (auto-generated)
+│   └── playbook.yml
 │
 ├── node-app/
 │   ├── Dockerfile
@@ -103,18 +107,18 @@ Ensure the following tools are installed:
 
 ## Step 1 — Build & Push Docker Image
 
-```bash id="gk8yla"
+```bash
 cd node-app
-docker build -t <dockerhub-username>/node-app:latest .
+docker build -t nayan2830/node-app:latest .
 docker login
-docker push <dockerhub-username>/node-app:latest
+docker push nayan2830/node-app:latest
 ```
 
 ---
 
 ## Step 2 — Provision Infrastructure using Terraform
 
-```bash id="8sr1g7"
+```bash
 cd terraform
 terraform init
 terraform apply
@@ -123,14 +127,14 @@ terraform apply
 This will:
 
 * Create EC2 instance
-* Configure security group (ports 22 & 80)
+* Configure security group (ports 22 for SSH, 80 for web access)
 * Generate Ansible inventory file
 
 ---
 
 ## Step 3 — Configure & Deploy using Ansible
 
-```bash id="mk9jql"
+```bash
 cd ../ansible
 ansible-playbook -i inventory playbook.yml
 ```
@@ -147,7 +151,7 @@ This will:
 
 Open in browser:
 
-```id="e6w32v"
+```
 http://<EC2_PUBLIC_IP>
 ```
 
@@ -159,7 +163,7 @@ http://<EC2_PUBLIC_IP>
 * Pulled during deployment
 * Port mapping:
 
-```id="rxvfev"
+```
 EC2 Port 80 → Container Port 3000
 ```
 
@@ -167,7 +171,7 @@ EC2 Port 80 → Container Port 3000
 
 # 🔄 DevOps Workflow
 
-```id="us0xs2"
+```
 Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 ```
 
@@ -177,7 +181,8 @@ Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 
 ### Terraform Provisioning
 
-![Terraform](screenshots/terraform.png)
+![Terraform](screenshots/terraform1.png)
+![Terraform](screenshots/terraform2.png)
 
 ### Ansible Automation
 
@@ -185,7 +190,10 @@ Build (Local) → Push (Docker Hub) → Deploy (AWS EC2)
 
 ### Docker Container
 
-![Docker](screenshots/docker.png)
+![Docker](screenshots/docker1.png)
+![Docker](screenshots/docker2.png)
+![Docker](screenshots/docker3.png)
+![Docker](screenshots/docker4.png)
 
 ### Application Output
 
