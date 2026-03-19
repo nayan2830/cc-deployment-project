@@ -17,14 +17,21 @@
       name: docker
       state: started
 
-  - name: Copy node-app folder to EC2
-    copy:
-      src: ../node-app/
-      dest: /home/ubuntu/node-app/
+  - name: Enable Docker
+    service:
+      name: docker
+      enabled: yes
 
-  - name: Build Docker image
-    command: docker build -t node-app /home/ubuntu/node-app
-
-  - name: Run Docker container
-    command: docker run -d -p 80:3000 node-app
+  - name: Stop existing container
+    command: docker stop node-app
     ignore_errors: yes
+
+  - name: Remove old container
+    command: docker rm node-app
+    ignore_errors: yes
+
+  - name: Pull Docker image from Docker Hub
+    command: docker pull nayan2830/node-app:latest
+
+  - name: Run container
+    command: docker run -d --restart always --name node-app -p 80:3000 nayan2830/node-app:latest
